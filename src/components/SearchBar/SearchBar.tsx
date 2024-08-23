@@ -7,6 +7,7 @@ import {
   withStyles,
 } from "@material-ui/core/styles";
 import debounce from "lodash.debounce";
+import pokemonLogo from "../../assets/images/pokemon.png";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -70,7 +71,7 @@ class Search extends Component<Props, S> {
           <Box className={classes.logoBox}>
             <img
               className={classes.logo}
-              src="../../assets/images/pokemon.png"
+              src={pokemonLogo}
               alt="pokemon_logo"
             />
           </Box>
