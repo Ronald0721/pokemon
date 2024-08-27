@@ -57,6 +57,7 @@ defineFeature(feature, (test) => {
 
   beforeEach(() => {
     jest.resetModules();
+    global.fetch = jest.fn();
     props = {
       match: {
         isExact: true,

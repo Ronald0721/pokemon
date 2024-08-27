@@ -54,6 +54,7 @@ defineFeature(feature, (test) => {
 
   beforeEach(() => {
     jest.resetModules();
+    global.fetch = jest.fn();
   });
 
   test("User navigates to Home", ({ given, when, then }) => {

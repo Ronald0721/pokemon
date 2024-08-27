@@ -47,7 +47,7 @@ class Home extends Component<Props, S> {
     const { pokemonList, limit, offset, pokemonQuery } = this.state;
 
     try {
-      this.setState({ pokemonList: [], loading: true });
+      this.setState({ loading: true });
       if (pokemonQuery) {
         const pokemon = await getPokemon(
           `https://pokeapi.co/api/v2/pokemon/${pokemonQuery}`

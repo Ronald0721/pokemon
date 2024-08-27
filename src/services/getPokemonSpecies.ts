@@ -1,9 +1,12 @@
-import axios from "axios";
-
 export const getPokemonSpecies = async (url: string) => {
   try {
-    const response = await axios.get(url);
-    const species = response.data;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch Pokemon details");
+    }
+
+    const species = await response.json();
     return species;
   } catch (error) {
     if (error instanceof Error) {

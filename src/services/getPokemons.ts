@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Pokemon } from "../types/pokemonTypes";
 
 export const getPokemons = async (
@@ -12,10 +11,15 @@ export const getPokemons = async (
   let hasMore = false;
 
   try {
-    const response = await axios.get(
+    const response = await fetch(
       `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
     );
-    const data = response.data;
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch Pokemon list");
+    }
+
+    const data = await response.json();
     pokemons = data.results;
     hasMore = data.results.length > 0;
   } catch (error) {
@@ -31,8 +35,13 @@ export const getPokemons = async (
 
 export const getPokemon = async (url: string) => {
   try {
-    const response = await axios.get(url);
-    const pokemon = response.data;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch Pokemon details");
+    }
+
+    const pokemon = await response.json();
     return pokemon;
   } catch (error) {
     if (error instanceof Error) {
