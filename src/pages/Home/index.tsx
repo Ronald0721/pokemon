@@ -31,8 +31,8 @@ class Home extends Component<Props, S> {
     };
   }
 
-  async componentDidMount() {
-    await this.fetchPokemons();
+  componentDidMount() {
+    this.fetchPokemons();
   }
 
   componentDidUpdate(prevProps: Props, prevState: S) {
@@ -50,7 +50,6 @@ class Home extends Component<Props, S> {
         const pokemon = await getPokemon(
           `https://pokeapi.co/api/v2/pokemon/${pokemonQuery}`
         );
-        console.log(pokemon);
         this.setState({
           pokemonList: [pokemon],
           loading: false,
@@ -59,7 +58,6 @@ class Home extends Component<Props, S> {
       } else {
         if (pokemonList.length === 1) this.setState({ pokemonList: [] });
         const { pokemons, hasMore } = await getPokemons(limit, offset);
-        console.log(pokemons, hasMore);
         this.setState((prevState) => ({
           pokemonList: [...prevState.pokemonList, ...pokemons],
           loading: false,

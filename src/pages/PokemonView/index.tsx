@@ -64,11 +64,11 @@ export class PokemonView extends Component<Props, S> {
 
   fetchPokemon = async () => {
     try {
-      console.log(this.props.match.params.id, "params");
+      console.log(this.props.match.params.id, "paramsId");
       const pokemon = await getPokemon(
         `https://pokeapi.co/api/v2/pokemon/${this.props.match.params.id}`
       );
-      console.log(pokemon, "fetchedPokemon");
+      console.log(pokemon, "fetchPoke");
       this.setState({ pokemon });
     } catch (err) {
       console.error("Failed to fetch pokemon:", err);
@@ -77,9 +77,9 @@ export class PokemonView extends Component<Props, S> {
 
   fetchSpecies = async () => {
     try {
-      console.log(this.state.pokemon.species.url, "speciesURL");
+      console.log(this.state.pokemon.species.url, "specURL");
       const species = await getPokemonSpecies(this.state.pokemon.species.url);
-      console.log(species, "species");
+      console.log(species, "fetchSpe");
       this.setState({ loading: false, species });
     } catch (err) {
       console.error("Failed to fetch species:", err);
@@ -92,7 +92,8 @@ export class PokemonView extends Component<Props, S> {
 
   render() {
     const { pokemon, species } = this.state;
-    console.log(pokemon, "pokemon");
+    console.log(pokemon, "compokemon");
+    console.log(species, "comspecies");
 
     return (
       <Container>

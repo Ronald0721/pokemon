@@ -89,11 +89,11 @@ defineFeature(feature, (test) => {
   });
 
   test("User views Pokemon View Page", ({ given, when, then }) => {
-    given("User is on a Pokemon view page", () => {
+    given("User navigates to the Pokemon view page", () => {
       // Already initialized in beforeEach
     });
 
-    when("the Pokemon details are successfully fetched", async () => {
+    when("the Pokemon data is fetched successfully", async () => {
       (getPokemon as jest.Mock).mockResolvedValue(mockPokemonDetails);
       (getPokemonSpecies as jest.Mock).mockResolvedValue({
         flavor_text_entries: [
@@ -111,7 +111,7 @@ defineFeature(feature, (test) => {
       wrapper.update();
     });
 
-    then("the Pokemon details should be displayed", () => {
+    then("user will see the Pokemon's name and image", () => {
       expect(wrapper.find("h1").text()).toBe("pikachu");
       expect(wrapper.find("img").prop("src")).toBe(
         "https://example.com/pikachu.png"

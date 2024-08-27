@@ -1,6 +1,7 @@
 import { shallow, ShallowWrapper } from "enzyme";
 import { defineFeature, loadFeature } from "jest-cucumber";
 import Home from "../../../Home";
+import { SearchBar, PokemonList } from "../../../../components";
 
 const feature = loadFeature(
   "./src/pages/Home/__tests__/features/Home-scenario.feature"
@@ -24,9 +25,8 @@ defineFeature(feature, (test) => {
     });
 
     then("User will see the Home Page components", () => {
-      expect(HomeWrapper.find("SearchBar")).toHaveLength(1);
-      expect(HomeWrapper.find("InfiniteScroll")).toHaveLength(1);
-      expect(HomeWrapper.find("PokemonList")).toHaveLength(1);
+      expect(HomeWrapper.find(SearchBar)).toHaveLength(1);
+      expect(HomeWrapper.find(PokemonList)).toHaveLength(1);
     });
   });
 

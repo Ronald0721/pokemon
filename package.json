@@ -97,6 +97,9 @@
       "!__tests__/**/*",
       "src/pages/**/*.{ts,tsx,js,jsx}",
       "!src/pages/index.ts"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^axios$": "axios/dist/node/axios.cjs"
+    }
   }
 }
