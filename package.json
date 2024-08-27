@@ -38,7 +38,6 @@
     "jest-transform-stub": "^2.0.0",
     "ts-jest": "^25.2.0"
   },
-  "type": "module",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
