@@ -14,3 +14,8 @@ Feature: Home Page
     Given User is on the Home Page with a list of Pokemon
     When User scrolls down to load more Pokemon
     Then More Pokemon should be added to the list
+
+ Scenario: User searches for an unknown Pokemon
+    Given User is on the Home Page
+    When User enters an unknown Pokemon name in the search bar
+    Then The user should see an error message

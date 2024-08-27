@@ -54,24 +54,20 @@ defineFeature(feature, (test) => {
 
   beforeEach(() => {
     jest.resetModules();
-
-    (getPokemon as jest.Mock).mockResolvedValue(mockPokemon);
-    (getPokemons as jest.Mock).mockResolvedValue({
-      pokemons: mockPokemons,
-      hasMore: true,
-    });
-
-    HomeWrapper = shallow(<Home />);
-    instance = HomeWrapper.instance() as Home;
   });
 
   test("User navigates to Home", ({ given, when, then }) => {
     given("User is loading Home Page", () => {
-      // Setup already done in beforeEach
+      (getPokemons as jest.Mock).mockResolvedValue({
+        pokemons: mockPokemons,
+        hasMore: true,
+      });
+      HomeWrapper = shallow(<Home />);
+      instance = HomeWrapper.instance() as Home;
     });
 
     when("I successfully load Home Page", () => {
-      instance = HomeWrapper.instance() as Home;
+      // Setup already done in given
     });
 
     then("User will see the Home Page components", () => {
@@ -82,7 +78,9 @@ defineFeature(feature, (test) => {
 
   test("User searches for a Pokemon", ({ given, when, then }) => {
     given("User is on the Home Page", () => {
-      // Setup already done in beforeEach
+      (getPokemon as jest.Mock).mockResolvedValue(mockPokemon);
+      HomeWrapper = shallow(<Home />);
+      instance = HomeWrapper.instance() as Home;
     });
 
     when("User enters a Pokemon name in the search bar", async () => {
@@ -99,8 +97,36 @@ defineFeature(feature, (test) => {
     });
   });
 
+  test("User searches for an unknown Pokemon", ({ given, when, then }) => {
+    given("User is on the Home Page", () => {
+      (getPokemon as jest.Mock).mockRejectedValue(
+        new Error("Pokemon not found")
+      );
+      HomeWrapper = shallow(<Home />);
+      instance = HomeWrapper.instance() as Home;
+    });
+
+    when("User enters an unknown Pokemon name in the search bar", async () => {
+      instance.componentDidMount();
+      instance.handleSearch("pikachow");
+      HomeWrapper.update();
+    });
+
+    then("The user should see an error message", () => {
+      const errorMessage = HomeWrapper.find(".error-message").text();
+      expect(errorMessage).toMatch(/Oops/);
+      expect(instance.state.pokemonList.length).toBe(0);
+    });
+  });
+
   test("User loads more Pokemon", ({ given, when, then }) => {
     given("User is on the Home Page with a list of Pokemon", () => {
+      (getPokemons as jest.Mock).mockResolvedValue({
+        pokemons: mockPokemons,
+        hasMore: false,
+      });
+      HomeWrapper = shallow(<Home />);
+      instance = HomeWrapper.instance() as Home;
       instance.setState({
         pokemonList: mockPokemons,
         hasMore: true,
@@ -113,8 +139,9 @@ defineFeature(feature, (test) => {
     });
 
     then("More Pokemon should be added to the list", () => {
-      expect(instance.state.pokemonList.length).toBeGreaterThan(2);
-      expect(instance.state.hasMore).toBe(true);
+      const pokemonList = HomeWrapper.find(PokemonList).props().pokemons;
+      expect(pokemonList.length).toBeGreaterThan(mockPokemons.length);
+      expect(instance.state.hasMore).toBe(false);
     });
   });
 });

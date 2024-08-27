@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { PokemonList, SearchBar } from "../../components";
 import { getPokemon, getPokemons } from "../../services/getPokemons";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Container } from "@material-ui/core";
+import { Box, Container, Typography } from "@material-ui/core";
 import { Pokemon } from "../../types/pokemonTypes";
 
 // Props
@@ -16,6 +16,7 @@ interface S {
   hasMore: boolean;
   limit: number;
   offset: number;
+  error: string | null | unknown;
 }
 class Home extends Component<Props, S> {
   constructor(props: Props) {
@@ -28,6 +29,7 @@ class Home extends Component<Props, S> {
       hasMore: true,
       limit: 24,
       offset: 0,
+      error: null,
     };
   }
 
@@ -45,7 +47,7 @@ class Home extends Component<Props, S> {
     const { pokemonList, limit, offset, pokemonQuery } = this.state;
 
     try {
-      this.setState({ loading: true });
+      this.setState({ pokemonList: [], loading: true });
       if (pokemonQuery) {
         const pokemon = await getPokemon(
           `https://pokeapi.co/api/v2/pokemon/${pokemonQuery}`
@@ -66,8 +68,11 @@ class Home extends Component<Props, S> {
         }));
       }
     } catch (err) {
-      console.error("Failed to fetch pokemons:", err);
-      this.setState({ loading: false });
+      this.setState({
+        pokemonList: [],
+        loading: false,
+        error: err,
+      });
     }
   };
 
@@ -82,21 +87,29 @@ class Home extends Component<Props, S> {
   };
 
   render() {
-    const { pokemonList, hasMore } = this.state;
+    const { pokemonList, hasMore, error } = this.state;
     const loader = <h1>...</h1>;
 
     return (
       <>
         <SearchBar onSearch={this.handleSearch} />
         <Container maxWidth="xl">
-          <InfiniteScroll
-            dataLength={pokemonList.length}
-            next={this.fetchMoreData}
-            hasMore={hasMore}
-            loader={loader}
-          >
-            <PokemonList pokemons={pokemonList} />
-          </InfiniteScroll>
+          {error ? (
+            <Box>
+              <Typography className="error-message" align="center">
+                Oops! We couldn't find a Pokemon by that name.
+              </Typography>
+            </Box>
+          ) : (
+            <InfiniteScroll
+              dataLength={pokemonList.length}
+              next={this.fetchMoreData}
+              hasMore={hasMore}
+              loader={loader}
+            >
+              <PokemonList pokemons={pokemonList} />
+            </InfiniteScroll>
+          )}
         </Container>
       </>
     );

@@ -87,7 +87,7 @@ class PokemonCard extends Component<Props, State> {
       const pokemon = await getPokemon(
         `https://pokeapi.co/api/v2/pokemon/${pokemonQuery}`
       );
-      this.setState({ pokemon: pokemon, loading: false });
+      this.setState({ pokemon, loading: false });
     } catch (err) {
       console.error("Failed to fetch pokemon:", err);
     }

@@ -18,6 +18,7 @@ interface Props extends RouteComponentProps<RouteParams> {}
 // State
 interface S {
   loading: boolean;
+  error: string | null | unknown;
   pokemon: PokemonDetails;
   species: {
     flavor_text_entries: TextEntry[];
@@ -30,6 +31,7 @@ export class PokemonView extends Component<Props, S> {
 
     this.state = {
       loading: true,
+      error: null,
       pokemon: {
         name: "",
         height: "",
@@ -68,8 +70,9 @@ export class PokemonView extends Component<Props, S> {
         `https://pokeapi.co/api/v2/pokemon/${this.props.match.params.id}`
       );
       this.setState({ pokemon });
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch pokemon:", err);
+      this.setState({ error: err });
     }
   };
 
@@ -79,6 +82,7 @@ export class PokemonView extends Component<Props, S> {
       this.setState({ loading: false, species });
     } catch (err) {
       console.error("Failed to fetch species:", err);
+      this.setState({ error: err });
     }
   };
 

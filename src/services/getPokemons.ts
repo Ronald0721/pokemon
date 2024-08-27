@@ -1,9 +1,5 @@
 import axios from "axios";
-
-interface Pokemon {
-  name: string;
-  url: string;
-}
+import { Pokemon } from "../types/pokemonTypes";
 
 export const getPokemons = async (
   limit: number,
