@@ -6,6 +6,7 @@ import { getPokemon } from "../../../../services/getPokemons";
 import { getPokemonSpecies } from "../../../../services/getPokemonSpecies";
 import { PokemonDetails } from "../../../../types/pokemonTypes";
 import { RouteComponentProps } from "react-router-dom";
+import { Typography } from "@material-ui/core";
 
 const feature = loadFeature(
   "./src/pages/PokemonView/__tests__/features/PokemonView-scenario.feature"
@@ -84,6 +85,19 @@ defineFeature(feature, (test) => {
       },
     };
 
+    (getPokemon as jest.Mock).mockResolvedValue(mockPokemonDetails);
+    (getPokemonSpecies as jest.Mock).mockResolvedValue({
+      flavor_text_entries: [
+        {
+          flavor_text: "A cute Pokemon.",
+          language: {
+            name: "en",
+            url: "https://example.com/language",
+          },
+        },
+      ],
+    });
+
     wrapper = shallow(<PokemonView {...props} />);
     instance = wrapper.instance() as PokemonView;
   });
@@ -94,25 +108,14 @@ defineFeature(feature, (test) => {
     });
 
     when("the Pokemon data is fetched successfully", async () => {
-      (getPokemon as jest.Mock).mockResolvedValue(mockPokemonDetails);
-      (getPokemonSpecies as jest.Mock).mockResolvedValue({
-        flavor_text_entries: [
-          {
-            flavor_text: "A cute Pokemon.",
-            language: {
-              name: "en",
-              url: "https://example.com/language",
-            },
-          },
-        ],
-      });
-
       await instance.componentDidMount();
       wrapper.update();
     });
 
     then("user will see the Pokemon's name and image", () => {
-      expect(wrapper.find("h1").text()).toBe("pikachu");
+      const typography = wrapper.find(Typography).first();
+      expect(typography.prop("component")).toBe("h1");
+      expect(typography.text()).toBe("pikachu");
       expect(wrapper.find("img").prop("src")).toBe(
         "https://example.com/pikachu.png"
       );

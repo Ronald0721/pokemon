@@ -64,11 +64,9 @@ export class PokemonView extends Component<Props, S> {
 
   fetchPokemon = async () => {
     try {
-      console.log(this.props.match.params.id, "paramsId");
       const pokemon = await getPokemon(
         `https://pokeapi.co/api/v2/pokemon/${this.props.match.params.id}`
       );
-      console.log(pokemon, "fetchPoke");
       this.setState({ pokemon });
     } catch (err) {
       console.error("Failed to fetch pokemon:", err);
@@ -77,9 +75,7 @@ export class PokemonView extends Component<Props, S> {
 
   fetchSpecies = async () => {
     try {
-      console.log(this.state.pokemon.species.url, "specURL");
       const species = await getPokemonSpecies(this.state.pokemon.species.url);
-      console.log(species, "fetchSpe");
       this.setState({ loading: false, species });
     } catch (err) {
       console.error("Failed to fetch species:", err);
@@ -92,8 +88,6 @@ export class PokemonView extends Component<Props, S> {
 
   render() {
     const { pokemon, species } = this.state;
-    console.log(pokemon, "compokemon");
-    console.log(species, "comspecies");
 
     return (
       <Container>
@@ -101,14 +95,20 @@ export class PokemonView extends Component<Props, S> {
         <Grid container spacing={2}>
           <Grid xs={12} sm={6} item>
             <Box>
-              <img alt={pokemon.name} src={pokemon.sprites.front_default}></img>
+              <img
+                className="pokemon-img"
+                alt={pokemon.name}
+                src={pokemon.sprites.front_default}
+              ></img>
             </Box>
-            <Typography component="h1">{pokemon.name}</Typography>
+            <Typography className="pokemon-name" component="h1">
+              {pokemon.name}
+            </Typography>
           </Grid>
           <Grid xs={12} sm={6} item>
             <Paper>
               <Box>
-                <Typography component="p">
+                <Typography className="pokemon-flavor_text" component="p">
                   {species.flavor_text_entries[0].flavor_text}
                 </Typography>
 
