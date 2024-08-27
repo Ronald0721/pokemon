@@ -38,6 +38,7 @@
     "jest-transform-stub": "^2.0.0",
     "ts-jest": "^25.2.0"
   },
+  "type": "module",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -97,9 +98,6 @@
       "!__tests__/**/*",
       "src/pages/**/*.{ts,tsx,js,jsx}",
       "!src/pages/index.ts"
-    ],
-    "moduleNameMapper": {
-      "^axios$": "axios/dist/node/axios.cjs"
-    }
+    ]
   }
 }

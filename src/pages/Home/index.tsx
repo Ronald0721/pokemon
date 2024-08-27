@@ -56,6 +56,7 @@ class Home extends Component<Props, S> {
           pokemonList: [pokemon],
           loading: false,
           hasMore: false,
+          error: null,
         });
       } else {
         if (pokemonList.length === 1) this.setState({ pokemonList: [] });
@@ -65,6 +66,7 @@ class Home extends Component<Props, S> {
           loading: false,
           hasMore,
           offset: prevState.offset + limit,
+          error: null,
         }));
       }
     } catch (err) {

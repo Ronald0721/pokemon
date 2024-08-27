@@ -69,7 +69,7 @@ export class PokemonView extends Component<Props, S> {
       const pokemon = await getPokemon(
         `https://pokeapi.co/api/v2/pokemon/${this.props.match.params.id}`
       );
-      this.setState({ pokemon });
+      this.setState({ pokemon, error: null });
     } catch (err: unknown) {
       console.error("Failed to fetch pokemon:", err);
       this.setState({ error: err });
